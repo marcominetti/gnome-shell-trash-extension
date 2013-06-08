@@ -59,7 +59,7 @@ TrashButton.prototype = {
     __proto__: PanelMenu.SystemStatusButton.prototype,
 
     _init: function() {
-        PanelMenu.SystemStatusButton.prototype._init.call(this, 'user-trash');
+        PanelMenu.SystemStatusButton.prototype._init.call(this, 'user-trash-symbolic');
 
         this.trash_path = 'trash:///';
         this.trash_file = Gio.file_new_for_uri(this.trash_path);
@@ -118,16 +118,10 @@ TrashButton.prototype = {
       let count  = 0;
       let file_info = null;
       while ((file_info = children.next_file(null, null)) != null) {
-        let item = new PopupMenu.PopupBaseMenuItem()
-        let icon = new St.Icon({ gicon: file_info.get_icon(),
-                                 style_class: 'popup-menu-icon' });
-        item.addActor(icon);
-        item.addActor(new St.Label({ text: file_info.get_name() }));
-        this.menu.addMenuItem(item);
-        count++;
-      }
-      children.close(null, null)
-      return count;
+        children.close(null, null);
+        return 1;
+      }    
+      return 0;
     },
 
     _clearMenu: function() {
@@ -198,7 +192,7 @@ let _indicator;
 
 function enable() {
   _indicator = new TrashButton;
-  Main.panel.addToStatusArea('trash_button', _indicator);
+  Main.panel.addToStatusArea('trash_button', _indicator, 2, 'left');
 }
 
 function disable() {
